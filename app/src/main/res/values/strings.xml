@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">hacksheffield9app</string>
+    <string name="title_activity_login_page">Login_Page</string>
 </resources>
