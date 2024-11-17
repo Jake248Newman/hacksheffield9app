@@ -4,11 +4,13 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -154,90 +156,110 @@ class MainActivity : ComponentActivity() {
         var text1 by remember { mutableStateOf("") }
         var text2 by remember { mutableStateOf("") }
 
-        Column() {
+        Column(
+        ) {
 
-            textFeild("Email", text = text1, onTextChange = { newText -> text1 = newText })
+            textFeild("Username", text = text1, onTextChange = { newText -> text1 = newText })
             textFeild("Password", text = text2, onTextChange = { newText -> text2 = newText })
 
-            LoginButton() {
-                var index = userEmail.indexOf(text1)
-                if (userPassword[index].equals(text2)){
-                    userId = userData[index]
-                    loggedIn = true
+            Row (
+            ){
+                LoginButton(
 
-                    database.child("Temp").setValue(0)
-                    database.child("Temp").removeValue()
-                }else{
-                    text1 = ""
-                    text2 = ""
+                ) {
+                    var index = userEmail.indexOf(text1)
+                    if (userPassword[index].equals(text2)) {
+                        userId = userData[index]
+                        loggedIn = true
+
+                        database.child("Temp").setValue(0)
+                        database.child("Temp").removeValue()
+                    } else {
+                        text1 = ""
+                        text2 = ""
+                    }
                 }
-            }
-            SignupButton() {
-                var alphabet = listOf(
-                    "a",
-                    "b",
-                    "c",
-                    "d",
-                    "e",
-                    "f",
-                    "g",
-                    "h",
-                    "i",
-                    "j",
-                    "k",
-                    "l",
-                    "m",
-                    "n",
-                    "o",
-                    "p",
-                    "q",
-                    "r",
-                    "s",
-                    "t",
-                    "u",
-                    "v",
-                    "w",
-                    "x",
-                    "y",
-                    "z",
-                    "A",
-                    "B",
-                    "C",
-                    "D",
-                    "E",
-                    "F",
-                    "G",
-                    "H",
-                    "I",
-                    "J",
-                    "K",
-                    "L",
-                    "M",
-                    "N",
-                    "O",
-                    "P",
-                    "Q",
-                    "R",
-                    "S",
-                    "T",
-                    "U",
-                    "V",
-                    "W",
-                    "X",
-                    "Y",
-                    "Z"
-                )
-                var outputString = "-"
-                for (i in 1..20) {
-                    outputString += alphabet.random()
+                SignupButton() {
+
+                    if ((text1.length > 3) && (text2.length > 5)) {
+                        var alphabet = listOf(
+                            "a",
+                            "b",
+                            "c",
+                            "d",
+                            "e",
+                            "f",
+                            "g",
+                            "h",
+                            "i",
+                            "j",
+                            "k",
+                            "l",
+                            "m",
+                            "n",
+                            "o",
+                            "p",
+                            "q",
+                            "r",
+                            "s",
+                            "t",
+                            "u",
+                            "v",
+                            "w",
+                            "x",
+                            "y",
+                            "z",
+                            "A",
+                            "B",
+                            "C",
+                            "D",
+                            "E",
+                            "F",
+                            "G",
+                            "H",
+                            "I",
+                            "J",
+                            "K",
+                            "L",
+                            "M",
+                            "N",
+                            "O",
+                            "P",
+                            "Q",
+                            "R",
+                            "S",
+                            "T",
+                            "U",
+                            "V",
+                            "W",
+                            "X",
+                            "Y",
+                            "Z"
+                        )
+                        var outputString = "-"
+                        for (i in 1..20) {
+                            outputString += alphabet.random()
+                        }
+
+                        database.child("Users").child(outputString).child("available_plots")
+                            .setValue(0)
+                        database.child("Users").child(outputString).child("email").setValue(text1)
+                        database.child("Users").child(outputString).child("password")
+                            .setValue(text2)
+
+                        userId = outputString
+                        loggedIn = true
+                    } else {
+                        text1 = ""
+                        text2 = ""
+
+                        Toast.makeText(
+                            applicationContext,
+                            "Username or password too short",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-
-                database.child("Users").child(outputString).child("available_plots").setValue(0)
-                database.child("Users").child(outputString).child("email").setValue(text1)
-                database.child("Users").child(outputString).child("password").setValue(text2)
-
-                userId = outputString
-                loggedIn = true
             }
         }
     }
