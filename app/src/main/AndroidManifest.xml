@@ -13,6 +13,11 @@
         android:theme="@style/Theme.Hacksheffield9app"
         tools:targetApi="31">
         <activity
+            android:name=".AddTask"
+            android:exported="false"
+            android:label="@string/title_activity_add_task"
+            android:theme="@style/Theme.Hacksheffield9app" />
+        <activity
             android:name=".Login_Page"
             android:exported="false"
             android:label="@string/title_activity_login_page"
